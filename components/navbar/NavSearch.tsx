@@ -1,7 +1,11 @@
+import { Input } from "../ui/input";
+
 export default function NavSearch() {
   return (
-    <div>
-      <h1 className="text-3xl font-bold underline">NavSearch Page</h1>
-    </div>
+    <Input
+      type="text"
+      placeholder="find a property..."
+      className="max-w-xs dark:bg-muted"
+    />
   );
 }
