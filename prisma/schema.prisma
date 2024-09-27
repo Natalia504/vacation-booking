@@ -4,6 +4,8 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+//NB: every time we make a change to the DB, must push into Prisma: `npx prisma db push`
+
 datasource db {
   provider          = "postgresql"
   url               = env("DATABASE_URL")
@@ -29,5 +31,25 @@ model Profile {
   profileImage String
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
+  properties Property[] // each user can be associated with multiple properties
 
+}
+model Property {
+  id          String     @id @default(uuid())
+  name        String
+  tagline     String
+  category    String
+  image       String
+  country     String
+  description String
+  price       Int
+  guests      Int
+  bedrooms    Int
+  beds        Int
+  baths       Int
+  amenities   String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  profile     Profile    @relation(fields: [profileId], references: [clerkId], onDelete: Cascade) // property can only have one User
+  profileId   String
 }
