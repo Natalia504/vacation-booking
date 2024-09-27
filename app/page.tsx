@@ -1,12 +1,26 @@
 import { Button, buttonVariants } from "@/components/ui/button";
+import CategoriesList from "../components/home/CategoriesList";
+import PropertiesContainer from "../components/home/PropertiesContainer";
+import { Suspense } from "react";
+import LoadingCards from "../components/card/LoadingCards";
 
-export default function Home() {
+export default function Home({
+  searchParams,
+}: {
+  searchParams: { category?: string; search?: string };
+}) {
   return (
-    <div>
-      <Button variant="outline" size="lg" className="capitalize m-8">
-        Click me
-      </Button>
-      <h1 className="text-3xl font-bold underline">Home Page</h1>
-    </div>
+    <section>
+      <CategoriesList
+        category={searchParams?.category}
+        search={searchParams?.search}
+      />
+      <Suspense fallback={<LoadingCards />}>
+        <PropertiesContainer
+          category={searchParams?.category}
+          search={searchParams?.search}
+        />
+      </Suspense>
+    </section>
   );
 }
