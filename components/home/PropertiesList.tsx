@@ -1,7 +1,7 @@
 import { PropertyCardProps } from "../../utils/types";
 import PropertyCard from "../card/PropertyCard";
 
-export default function PropertiesContainer({
+export default function PropertiesList({
   properties,
 }: {
   properties: PropertyCardProps[];
