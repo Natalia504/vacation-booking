@@ -187,3 +187,76 @@ export const fetchProperties = async ({
   });
   return properties;
 };
+
+export const fetchFavoriteId = async ({
+  propertyId,
+}: {
+  propertyId: string;
+}) => {
+  const user = await getAuthUser();
+  const favorite = await db.favorite.findFirst({
+    where: {
+      propertyId,
+      profileId: user.id,
+    },
+    select: {
+      id: true,
+    },
+  });
+  return favorite?.id || null;
+};
+
+export const toggleFavoriteAction = async (prevState: {
+  propertyId: string;
+  favoriteId: string | null;
+  pathname: string;
+}) => {
+  const user = await getAuthUser();
+  console.log("user GETS HERE????????: ", user);
+  const { propertyId, favoriteId, pathname } = prevState;
+
+  try {
+    if (favoriteId) {
+      console.log("Should DELETE FAVORITE");
+      await db.favorite.delete({ where: { id: favoriteId } });
+    } else {
+      console.log("SHOULD CREATE FAVORITE");
+      await db.favorite.create({
+        data: {
+          profileId: user.id,
+          propertyId,
+        },
+      });
+    }
+    revalidatePath(pathname);
+    return {
+      message: favoriteId
+        ? "Favorite removed"
+        : "Favorite updated successfully",
+    };
+  } catch (error) {
+    return renderError(error);
+  }
+};
+
+export const fetchFavorites = async () => {
+  const user = await getAuthUser();
+  const favorites = await db.favorite.findMany({
+    where: {
+      profileId: user.id,
+    },
+    select: {
+      property: {
+        select: {
+          id: true,
+          name: true,
+          price: true,
+          image: true,
+          tagline: true,
+          country: true,
+        },
+      },
+    },
+  });
+  return favorites.map((favorite) => favorite.property);
+};
