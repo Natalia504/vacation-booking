@@ -13,9 +13,18 @@ import { ZodError } from "zod";
 import { revalidatePath } from "next/cache";
 import { uploadImage } from "./supabase";
 
+// const getAuthUser = async () => {
+//   const user = await currentUser();
+//   if (!user) throw new Error("You must be logged in to access this page");
+//   if (!user.privateMetadata.hasProfile) redirect("/profile/create");
+//   return user;
+// };
+
 const getAuthUser = async () => {
   const user = await currentUser();
-  if (!user) throw new Error("You must be logged in to access this page");
+  if (!user) {
+    throw new Error("You must be logged in to access this route");
+  }
   if (!user.privateMetadata.hasProfile) redirect("/profile/create");
   return user;
 };
@@ -163,7 +172,6 @@ export const fetchProperties = async ({
   search?: string;
   category?: string;
 }) => {
-  const user = await getAuthUser();
   const properties = await db.property.findMany({
     where: {
       // all these properties are prisma specific
