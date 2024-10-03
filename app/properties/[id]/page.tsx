@@ -11,7 +11,6 @@ import UserInfo from "@/components/properties/UserInfo";
 import { Separator } from "@/components/ui/separator";
 import { Description } from "@/components/properties/Description";
 import Amenities from "@/components/properties/Amenities";
-import PropertyMap from "@/components/properties/PropertyMap";
 import dynamic from "next/dynamic";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -51,7 +50,9 @@ export default async function PropertyDetailsPage({
         <div className="lg:col-span-8">
           <div className="flex gap-x-4 items-center">
             <h1 className="text-xl font-bold">{property.name}</h1>
-            <PropertyRating inPage propertyId={property.id} />
+            <PropertyRating
+              inPage // propertyId={propertyId}
+            />
           </div>
           <PropertyDetails details={details} />
           <UserInfo profile={{ profileImage, firstName }} />

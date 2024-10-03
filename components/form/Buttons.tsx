@@ -5,7 +5,6 @@ import { useFormStatus } from "react-dom";
 import { Button } from "@/components/ui/button";
 import { SignInButton } from "@clerk/nextjs";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
-import { actionFunction } from "../../utils/types";
 
 type btnSize = "sm" | "lg" | "default";
 

@@ -1,5 +1,4 @@
 import { formatQuantity } from "@/utils/format";
-import PropertyRating from "../card/PropertyRating";
 
 type PropertyDetailsProps = {
   details: {
