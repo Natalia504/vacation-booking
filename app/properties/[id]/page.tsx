@@ -10,6 +10,7 @@ import PropertyDetails from "@/components/properties/PropertyDetails";
 import UserInfo from "@/components/properties/UserInfo";
 import { Separator } from "@/components/ui/separator";
 import { Description } from "@/components/properties/Description";
+import Amenities from "@/components/properties/Amenities";
 
 export default async function PropertyDetailsPage({
   params,
@@ -45,6 +46,7 @@ export default async function PropertyDetailsPage({
           <UserInfo profile={{ profileImage, firstName }} />
           <Separator className="mt-4" />
           <Description description={property.description} />
+          <Amenities amenities={property.amenities} />
         </div>
 
         <div className="lg:col-span-4 flex flex-col items-center">
