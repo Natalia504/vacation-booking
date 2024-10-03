@@ -220,15 +220,12 @@ export const toggleFavoriteAction = async (prevState: {
   pathname: string;
 }) => {
   const user = await getAuthUser();
-  console.log("user GETS HERE????????: ", user);
   const { propertyId, favoriteId, pathname } = prevState;
 
   try {
     if (favoriteId) {
-      console.log("Should DELETE FAVORITE");
       await db.favorite.delete({ where: { id: favoriteId } });
     } else {
-      console.log("SHOULD CREATE FAVORITE");
       await db.favorite.create({
         data: {
           profileId: user.id,
