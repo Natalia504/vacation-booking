@@ -33,6 +33,7 @@ model Profile {
   updatedAt    DateTime   @updatedAt
   properties   Property[] // each user can be associated with multiple properties
   favorites    Favorite[]
+  reviews      Review[]
 }
 model Property {
   id          String     @id @default(uuid())
@@ -53,6 +54,7 @@ model Property {
   profile     Profile    @relation(fields: [profileId], references: [clerkId], onDelete: Cascade) // property can only have one User
   profileId   String
   favorites   Favorite[]
+  reviews Review[]
 }
 
 model Favorite {
@@ -66,4 +68,16 @@ model Favorite {
   property   Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
   propertyId String
 
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  profile   Profile  @relation(fields: [profileId], references: [clerkId], onDelete: Cascade)
+  profileId String
+  property   Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  propertyId String
+  rating    Int
+  comment   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
