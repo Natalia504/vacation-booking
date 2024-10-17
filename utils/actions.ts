@@ -299,14 +299,54 @@ export const createReviewAction = async (
   }
 };
 
-export const fetchPropertyReviews = async () => {
-  return { message: "fetch reviews" };
+export const fetchPropertyReviews = async (propertyId: string) => {
+  const reviews = await db.review.findMany({
+    where: { propertyId },
+    select: {
+      id: true,
+      comment: true,
+      rating: true,
+      profile: {
+        select: {
+          firstName: true,
+          profileImage: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+  return reviews;
 };
 
 export const fetchPropertyReviewsByUser = async () => {
-  return { message: "fetch user reviews" };
+  const user = await getAuthUser();
+  const reviews = await db.review.findMany({
+    where: { profileId: user.id },
+    select: {
+      id: true,
+      comment: true,
+      rating: true,
+      profile: {
+        select: {
+          firstName: true,
+          profileImage: true,
+        },
+      },
+    },
+  });
+  return reviews;
 };
 
-export const deleteReviewAction = async () => {
-  return { message: "delete  reviews" };
+export const deleteReviewAction = async (prevState: { reviewId: string }) => {
+  const { reviewId } = prevState;
+  const user = await getAuthUser();
+  try {
+    await db.review.delete({ where: { id: reviewId } });
+    revalidatePath(`/profile`);
+    return { message: "Review deleted successfully" };
+  } catch (error) {
+    return renderError(error);
+  }
 };
