@@ -1,7 +1,12 @@
+import { IconButton } from "@/components/form/Buttons";
+import FormContainer from "@/components/form/FormContainer";
 import EmptyList from "@/components/home/EmptyList";
 import Title from "@/components/properties/Title";
 import ReviewCard from "@/components/reviews/ReviewCard";
-import { fetchPropertyReviewsByUser } from "@/utils/actions";
+import {
+  deleteReviewAction,
+  fetchPropertyReviewsByUser,
+} from "@/utils/actions";
 
 export default async function ReviewsPage() {
   const reviews = await fetchPropertyReviewsByUser();
@@ -15,16 +20,16 @@ export default async function ReviewsPage() {
       <section className="grid md:grid-cols-2 gap-8 mt-4 ">
         {reviews.map((review) => {
           const { comment, rating } = review;
-          const { firstName, profileImage } = review.profile;
+          const { firstName: name, profileImage: image } = review.profile;
           const reviewInfo = {
             comment,
             rating,
-            name: firstName,
-            image: profileImage,
+            name,
+            image,
           };
           return (
             <ReviewCard key={review.id} reviewInfo={reviewInfo}>
-              {/* <DeleteReview reviewId={review.id} /> */}
+              <DeleteReview reviewId={review.id} />
             </ReviewCard>
           );
         })}
@@ -32,3 +37,13 @@ export default async function ReviewsPage() {
     </>
   );
 }
+
+const DeleteReview = ({ reviewId }: { reviewId: string }) => {
+  const deleteReview = deleteReviewAction.bind(null, { reviewId });
+
+  return (
+    <FormContainer action={deleteReview}>
+      <IconButton actionType="delete" />
+    </FormContainer>
+  );
+};
